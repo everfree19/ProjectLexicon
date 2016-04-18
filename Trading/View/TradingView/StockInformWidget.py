@@ -11,9 +11,11 @@ class stockInformWidget:
         btn_kospi = QPushButton("KOSPI", lexiconWindow)
         btn_kospi.move(10, 80)
         btn_kospi.clicked.connect(self.btn_clicked_getCodeList_kospi)
+        self.lexiconWindow = lexiconWindow
         self.lexiconAxCtrl = lexiconWindow.lexiconAxCtrl
         self.kospiListCtrl = lexiconWindow.KospiListWidgetCtrl
         self.kospiListCtrl.setGeometry(10, 110, 200, 300)
+
         # 코스닥 정보 위젯
         btn_kosdaq = QPushButton("KOSDAQ", lexiconWindow)
         btn_kosdaq.move(10, 420)
@@ -31,21 +33,34 @@ class stockInformWidget:
 
         #체결정보 요청
         label = QLabel('체결 정보 ', lexiconWindow)
-        label.move(450, 80)
+        label.move(220, 420)
         self.conclusionInfoTextCtrl = QTextEdit(lexiconWindow)
-        self.conclusionInfoTextCtrl.setGeometry(450, 110, 200, 300)
+        self.conclusionInfoTextCtrl.setGeometry(220, 450, 200, 300)
         self.conclusionInfoTextCtrl.setEnabled(True)
 
         #이벤트 리스너 등록
         self.registerLexiconEventListener()
 
-
-
     def registerLexiconEventListener(self) :
-        lexiconMainpresenter.axDynamicCallback.interfaceBinding (self, lexiconMainpresenter.StockInformDao)
+        lexiconMainpresenter.axDynamicCallback.interfaceBinding (self.lexiconWindow, lexiconMainpresenter.StockInformDao)
+        # TR data 이벤트 핸들러
+        #self.lexiconAxCtrl.connect(
+        #    self.lexiconAxCtrl, SIGNAL("OnReceiveMsg(QString, QString, QString, QString)"),
+        #    lexiconMainpresenter.axDynamicCallback.OnReceiveMsg)
+
         self.lexiconAxCtrl.connect(
             self.lexiconAxCtrl, SIGNAL("OnReceiveTrData(QString, QString, QString, QString, QString, int, QString, QString, QString)"),
             lexiconMainpresenter.axDynamicCallback.OnReceiveTrData)
+
+        self.lexiconAxCtrl.connect(
+            self.lexiconAxCtrl, SIGNAL("OnReceiveMsg(QString, QString, QString, QString)"),
+            lexiconMainpresenter.axDynamicCallback.OnReceiveMsg)
+
+        self.lexiconAxCtrl.connect(
+            self.lexiconAxCtrl, SIGNAL("OnReceiveChejanData(QString, int, QString)"),
+            lexiconMainpresenter.axDynamicCallback.OnReceiveChejanData)
+
+
 
     def btn_clicked_getCodeList_kospi(self):
         if self.lexiconAxCtrl is not None:
@@ -86,9 +101,10 @@ class stockInformWidget:
         self.lexiconAxCtrl.dynamicCall("CommRqData(QString, QString, int, QString)", "RequestRapidVolumnList", "OPT10023", 0, "0101") # 0101 은 화면 번혼데 뭔지 모르겠네
 
 
-
     def onRTVCurrentRowChanged ( self, nRow ) :
         self.conclusionInfoTextCtrl.clear()
         stockItem = lexiconMainpresenter.StockInformDao.getStockItem(nRow)
         self.lexiconAxCtrl.dynamicCall("SetInputValue(QString,QString)", "종목코드",stockItem._code)
         self.lexiconAxCtrl.dynamicCall("CommRqData(QString, QString, int, QString)", "ConclusionInfo", "OPT10003", 0, "0101")
+
+

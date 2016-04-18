@@ -4,7 +4,7 @@ from PyQt4 import QtCore
 
 class stockTimer(QtCore.QThread):
     TimerSignal = QtCore.pyqtSignal([str])
-    def __init__(self, lexiconWnd):
+    def __init__(self):
         super(stockTimer, self).__init__()
         self.delay = 1
         self.state = True

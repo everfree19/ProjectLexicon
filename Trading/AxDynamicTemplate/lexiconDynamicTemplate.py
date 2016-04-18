@@ -30,6 +30,7 @@ def extractTrData_RapidVolumnListData ( lexiconWindow , StockDao, TrCode, RQName
         lexiconWindow.rtvListCtrl.addItems(VolumnList_list)
 
 
+
 def extractTrData_ConclusionInfo ( lexiconWindow , StockDao, TrCode, RQName) :
         conclusion_list = []
         for i in range(0, 10): # 수치 동적 변경 필요
@@ -51,6 +52,7 @@ def extractTrData_ConclusionInfo ( lexiconWindow , StockDao, TrCode, RQName) :
             #                   "체결강도 : " + conclusionStrength.strip() + "\n"
             #                   )
 
+#체결정보 extract
 
 
 

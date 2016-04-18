@@ -1,12 +1,14 @@
 import sys
-from View.LexiconMainFrame import *
-from Presenter.IPresenter import *
+
+from View.MainWindow.LexiconMainFrame import *
+import LexiconPresenter
+
 # run mainFrame
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)
-    lexiconMainpresenter = LexiconPresenter.lexiconPresenter()
     lexiconMainView = LexiconMainFrame()
+    exiconMainpresenter = LexiconPresenter.lexiconPresenter()
     lexiconMainView.show()
     app.exec_()
 

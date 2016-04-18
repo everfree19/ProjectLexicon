@@ -15,7 +15,15 @@ class authenticateWidget:
     def requestLoginInfo(self):
         global lexiconMainpresenter
 
+        lexiconMainpresenter.setActivate(True)
         account_num = self.lexiconCtrl.dynamicCall("GetLoginInfo(QString)", ["ACCNO"])
+        userid = self.lexiconCtrl.dynamicCall("GetLoginInfo(QString)", ["USER_ID"])
+        print ( userid.rstrip(';') )
+        username = self.lexiconCtrl.dynamicCall("GetLoginInfo(QString)", ["USER_NAME"])
+        print ( username.rstrip(';') )
+        acccnt = self.lexiconCtrl.dynamicCall("GetLoginInfo(QString)", ["ACCOUNT_CNT"])
+        print ( acccnt.rstrip(';') )
+
         AccountStr = account_num.rstrip(';')
         lexiconMainpresenter.Account.setAccount(AccountStr)
         self.loginInfoCtrl.append("계좌번호: " + AccountStr)
